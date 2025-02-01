@@ -8,16 +8,21 @@ export class GameCompleted extends Phaser.Scene {
     init(data) {
         this.level = data.level;
         this.maxLevel = data.maxLevel;
+        this.level = data.level;
+        this.gridSize = data.gridSize;
+        this.randomCells = data.randomCells;
+        
     }
+   
 
     create() {
         this.add.text(100, 100, 'Congratulations!', { fontSize: '32px', fill: '#0f0' });
 
-        this.createButton(100, 200, 'Play Again', () => this.scene.start('Play', { level: this.level }));
+        this.createButton(100, 200, 'Play Again', () => this.scene.start('Play', { level: this.level , gridSize: this.gridSize, randomCells: this.randomCells }));
         
-        if (this.level < this.maxLevel) {
-            this.createButton(100, 300, 'Next Level', () => this.scene.start('Play', { level: this.level + 1 }));
-        }
+        // if (this.level < this.maxLevel) {
+        //     this.createButton(100, 300, 'Next Level', () => this.scene.start('Play', { level: this.level + 1 }));
+        // }
 
         this.createButton(100, 400, 'Level Select', () => this.scene.start('LevelSelect'));
     }

@@ -9,6 +9,8 @@ export class Play extends Phaser.Scene {
         this.level = data.level;
         this.gridSize = data.gridSize;
         this.randomCells = data.randomCells;
+        this.previewTimer = 3;
+        this.gameTimer = 3;
     }
 
     create() {
@@ -17,7 +19,7 @@ export class Play extends Phaser.Scene {
         bg.displayWidth = this.sys.game.config.width;
         bg.displayHeight = this.sys.game.config.height;
 
-        this.timeLeft = 5; // Initialize timeLeft before creating the grid
+        this.timeLeft = this.previewTimer; // Initialize timeLeft before creating the grid
         this.createGrid(this.gridSize);
         this.startPreviewTimer(this.timeLeft); // Start preview timer for 5 seconds
 
@@ -44,8 +46,8 @@ export class Play extends Phaser.Scene {
         for (let row = 0; row < size; row++) {
             this.grid[row] = [];
             for (let col = 0; col < size; col++) {
-                debugger;
-                const color = this.coloredCells.some(cell => cell.row === row && cell.col === col) ? Phaser.Utils.Array.GetRandom(colors.slice(1)) : colors[0];
+                const cell = this.coloredCells.find(cell => cell.row === row && cell.col === col);
+                const color = cell ? cell.color : colors[0];
                 const rect = this.add.rectangle(offsetX + col * cellSize, offsetY + row * cellSize, cellSize, cellSize, color)
                     .setStrokeStyle(2, 0x000000);
                 this.grid[row][col] = rect;
@@ -94,7 +96,7 @@ export class Play extends Phaser.Scene {
             this.timerEvent.remove();
             this.saveState();
             this.resetGrid();
-            this.startGameTimer(5); // Start game timer for 30 seconds
+            this.startGameTimer(this.gameTimer ); // Start game timer for 30 seconds
         }
     }
 
@@ -141,7 +143,8 @@ export class Play extends Phaser.Scene {
                 maxLevel: 9, // Assuming max level is 9
                 oldMatrix: this.coloredCells,
                 currentMatrix: this.grid.map(row => row.map(cell => cell.fillColor)),
-                gridSize: this.gridSize
+                gridSize: this.gridSize,
+                randomCells: this.randomCells
             });
         }
     }
@@ -161,7 +164,7 @@ export class Play extends Phaser.Scene {
 
         if (isFinished) {
             this.timerEvent.remove();
-            this.scene.start('GameCompleted', { level: this.level, maxLevel: 9 }); // Assuming max level is 9
+            this.scene.start('GameCompleted', { level: this.level, gridSize : this.gridSize, randomCells : this.randomCells}); // Assuming max level is 9
         }
     }
 
