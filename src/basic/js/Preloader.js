@@ -10,7 +10,7 @@ export class Preloader extends Phaser.Scene {
         this.load.setPath("./assets/");
         this.load.image("tiles", "drawtiles-spaced.png");
         this.load.image("background", "background.jpg");
-      //  this.load.audio("backgroundMusic", "background.mp3");
+        this.load.audio("backgroundMusic", "background.mp3");
         this.load.audio("jumpSound", "jump.wav");
     }
 

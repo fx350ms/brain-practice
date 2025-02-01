@@ -20,8 +20,8 @@ export class LevelSelect extends Phaser.Scene {
         this.createButton(100, 475, 'Very Hard', () => this.scene.start('Play', { level: 6, gridSize: 9, randomCells: 8 }));
      
         if (!this.sound.get('backgroundMusic')) {
-            // this.backgroundMusic = this.sound.add('backgroundMusic', { loop: true });
-            // this.backgroundMusic.play();
+             this.backgroundMusic = this.sound.add('backgroundMusic', { loop: true });
+             this.backgroundMusic.play();
         }
     }
 

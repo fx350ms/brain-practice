@@ -10,7 +10,7 @@ export class Play extends Phaser.Scene {
         this.gridSize = data.gridSize;
         this.randomCells = data.randomCells;
         this.previewTimer = 3;
-        this.gameTimer = 3;
+        this.gameTimer = 15;
     }
 
     create() {
@@ -24,8 +24,8 @@ export class Play extends Phaser.Scene {
         this.startPreviewTimer(this.timeLeft); // Start preview timer for 5 seconds
 
         if (!this.sound.get('backgroundMusic')) {
-        //    this.backgroundMusic = this.sound.add('backgroundMusic', { loop: true });
-           // this.backgroundMusic.play();
+           this.backgroundMusic = this.sound.add('backgroundMusic', { loop: true });
+           this.backgroundMusic.play();
         }
 
         this.jumpSound = this.sound.add('jumpSound');

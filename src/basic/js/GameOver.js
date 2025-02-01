@@ -15,8 +15,14 @@ export class GameOver extends Phaser.Scene {
     }
 
     create() {
+        const bg = this.add.image(0, 0, 'background',).setOrigin(0, 0);
+        bg.displayWidth = this.sys.game.config.width;
+        bg.displayHeight = this.sys.game.config.height;
         const centerX = this.cameras.main.width / 2;
-        this.add.text(centerX, 50, 'Game Over', { fontSize: '32px', fill: '#f00', fontWeight: 'bold' }).setOrigin(0.5, 0.5);
+        this.add.text(centerX, 50, 'Game Over', { fontSize: '32px', fill: '#f00', fontWeight: 'bold' ,
+            stroke: '#000',
+            strokeThickness: 4
+        }).setOrigin(0.5, 0.5);
 
         this.displayMatrices();
 
