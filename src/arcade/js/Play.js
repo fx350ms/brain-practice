@@ -31,6 +31,7 @@ export class Play extends Phaser.Scene {
             this.backgroundMusic = this.sound.add('backgroundMusic', { loop: true });
             this.backgroundMusic.play();
         }
+       this.createMuteButton();
 
         this.jumpSound = this.sound.add('jumpSound');
     }
@@ -68,12 +69,29 @@ export class Play extends Phaser.Scene {
         // Add preview timer text above the grid with border
         this.timerText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height - 75, `Preview Time: ${this.timeLeft}`, {
             fontSize: '32px',
-            fill: '#ea4335',
-            stroke: '#000',
+            fill: '#FFF',
+            stroke: '#f00',
             strokeThickness: 4
         }).setOrigin(0.5, 0.5);
     }
 
+    createMuteButton() {
+        const muteButton = this.add.text(this.cameras.main.width - 20, 20, '🔊', {
+            fontSize: '32px',
+            fill: '#fff'
+        }).setOrigin(1, 0).setInteractive();
+    
+        muteButton.on('pointerdown', () => {
+            if (this.sound.mute) {
+                this.sound.mute = false;
+                muteButton.setText('🔊');
+            } else {
+                this.sound.mute = true;
+                muteButton.setText('🔇');
+            }
+        });
+    }
+    
 
     getRandomCells(size, count) {
         const cells = [];
@@ -155,7 +173,8 @@ export class Play extends Phaser.Scene {
                 oldMatrix: this.coloredCells,
                 currentMatrix: this.grid.map(row => row.map(cell => cell.fillColor)),
                 gridSize: this.gridSize,
-                randomCells: this.randomCells
+                randomCells: this.randomCells,
+                score: this.score
             });
         }
     }

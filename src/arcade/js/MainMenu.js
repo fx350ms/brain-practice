@@ -27,12 +27,31 @@ export class MainMenu extends Phaser.Scene {
     );
 
         this.createButton(100, 220, 'Chơi', () => this.scene.start('Play', { level: 1 , score : 0}));
-        this.createButton(100, 295, 'Điểm cao', () => this.scene.start('TopScore'));
+        this.createButton(100, 295, 'Điểm cao', () => this.scene.start('Leaderboard'));
         this.createButton(100, 370, 'Hướng dẫn', () => this.scene.start('Help'));
+
         if (!this.sound.get('backgroundMusic')) {
              this.backgroundMusic = this.sound.add('backgroundMusic', { loop: true });
              this.backgroundMusic.play();
         }
+        this.createMuteButton();
+    }
+
+    createMuteButton() {
+        const muteButton = this.add.text(this.cameras.main.width - 20, 20, '🔊', {
+            fontSize: '32px',
+            fill: '#fff'
+        }).setOrigin(1, 0).setInteractive();
+    
+        muteButton.on('pointerdown', () => {
+            if (this.sound.mute) {
+                this.sound.mute = false;
+                muteButton.setText('🔊');
+            } else {
+                this.sound.mute = true;
+                muteButton.setText('🔇');
+            }
+        });
     }
 
     createButton(x, y, text, callback) {
