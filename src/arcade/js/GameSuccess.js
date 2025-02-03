@@ -1,7 +1,7 @@
-export class GameOver extends Phaser.Scene {
+export class GameSuccess extends Phaser.Scene {
     constructor() {
         super({
-            key: 'GameOver'
+            key: 'GameSuccess'
         });
     }
 
@@ -16,30 +16,47 @@ export class GameOver extends Phaser.Scene {
     }
 
     create() {
-        const { width, height } = this.sys.game.config;
-        var buttonWidth = 200;
-        var x = (width - buttonWidth) / 2;
+
         const bg = this.add.image(0, 0, 'background').setOrigin(0, 0);
+        const { width, height } = this.sys.game.config;
         bg.displayWidth = this.sys.game.config.width;
         bg.displayHeight = this.sys.game.config.height;
         const centerX = this.cameras.main.width / 2;
 
-        const titleBackground = this.add.rectangle(width / 2, 60, width * 0.8, 70, 0x000000, 0.8);
-        titleBackground.setOrigin(0.5, 0.5);
-
-        this.add.text(centerX, 50, 'Game Over', { fontSize: '32px', fill: '#f00', fontWeight: 'bold',
-            stroke: '#000',
-            strokeThickness: 4
-        }).setOrigin(0.5, 0.5);
+        // this.add.text(centerX, 50, 'YEAHHH!!!!!', { fontSize: '32px', fill: '#f00', fontWeight: 'bold',
+        //     stroke: '#000',
+        //     strokeThickness: 4
+        // }).setOrigin(0.5, 0.5);
 
         this.displayMatrices();
 
-        this.saveHighScore(this.score); // Save the high score
+        //  this.saveHighScore(this.score); // Save the high score
 
-        this.createButton(x, 500, 'Chơi lại', () => this.scene.start('Play', { level: this.level, gridSize: this.gridSize, randomCells: this.randomCells }));
-        this.createButton(x, 570, 'Bảng xếp hạng', () => this.scene.start('Leaderboard')); // Add button to go to leaderboard
 
-        
+        const titleBackground = this.add.rectangle(width / 2, 60, width * 0.8, 70, 0x000000, 0.5);
+        titleBackground.setOrigin(0.5, 0.5);
+        // Hiển thị thông tin Level ở đầu màn hình
+        this.title = this.add.text(this.cameras.main.width / 2, 60, 'YEAHHH!!!!!', {
+            fontSize: `${Math.min(width, height) * 0.09}px`,
+            fill: '#5fc309',
+            stroke: '#ffffff',
+            strokeThickness: 4,
+            shadow: {
+                offsetX: 3,
+                offsetY: 3,
+                color: '#000',
+                blur: 3,
+                stroke: true,
+                fill: true
+            }
+        }).setOrigin(0.5, 0.5);
+
+        const nextLevel = this.level < this.maxLevel ? this.level + 1 : this.level;
+        const score = this.score + 1;
+     
+
+        this.createButton(100, 500, 'Chơi tiếp', () =>   this.scene.start('Play', { level: nextLevel, score }));
+
     }
 
     displayMatrices() {
@@ -80,7 +97,7 @@ export class GameOver extends Phaser.Scene {
 
         this.add.text(currentMatrixCenterX, offsetY - 30, 'Của bạn', {
             fontSize: '28px',
-            fill: '#c71a1a',
+            fill: '#92e726',
             stroke: '#ffffff',
             fontweight: 'bold',
 
@@ -102,15 +119,15 @@ export class GameOver extends Phaser.Scene {
         localStorage.setItem('highScores', JSON.stringify(highScores));
     }
 
-    
+
     createButton(x, y, text, callback) {
         const button = this.add.graphics();
         button.fillStyle(0x0000ff, 1);
         button.fillRoundedRect(x, y, 200, 50, 10); // Added rounded corners with a radius of 10
-    
+
         const buttonText = this.add.text(x + 100, y + 25, text, { fontSize: '24px', fill: '#fff' });
         buttonText.setOrigin(0.5, 0.5);
-    
+
         button.setInteractive(new Phaser.Geom.Rectangle(x, y, 200, 50), Phaser.Geom.Rectangle.Contains);
         button.on('pointerdown', callback);
         button.on('pointerover', () => {

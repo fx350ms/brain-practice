@@ -4,12 +4,17 @@ import { Play } from './Play.js';
 import { GameOver } from './GameOver.js';
 import { GameCompleted } from './GameCompleted.js';
 import { Leaderboard } from './Leaderboard.js';
+import { GameSuccess } from './GameSuccess.js';
 
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    scene: [Preloader, MainMenu, Play, GameOver, GameCompleted, Leaderboard]
+    width: window.innerWidth,
+    height: window.innerHeight,
+    scene: [Preloader, MainMenu, Play, GameOver, GameCompleted, Leaderboard, GameSuccess],
+    scale: {
+        mode: Phaser.Scale.RESIZE,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    }
 };
 
 const game = new Phaser.Game(config);
